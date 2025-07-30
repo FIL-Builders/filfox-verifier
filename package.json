@@ -1,6 +1,6 @@
 {
   "name": "@fil-b/filfox-verifier",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "CLI tool for verifying smart contracts on Filfox explorer from hardhat and foundry projects",
   "main": "dist/index.js",
   "bin": {
