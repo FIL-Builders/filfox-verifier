@@ -1,0 +1,83 @@
+{
+  "name": "@fil-b/filfox-verifier",
+  "version": "0.0.0",
+  "description": "CLI tool for verifying smart contracts on Filfox explorer from hardhat and foundry projects",
+  "main": "dist/index.js",
+  "bin": {
+    "filfox-verifier": "dist/bin/cli.js"
+  },
+  "files": [
+    "dist/**/*"
+  ],
+  "exports": {
+    ".": "./dist/index.js",
+    "./hardhat": "./dist/hardhat.js"
+  },
+  "preferGlobal": true,
+  "scripts": {
+    "build": "tsc",
+    "commit": "cz",
+    "semantic-release": "semantic-release",
+    "lint": "eslint src/**/*.ts",
+    "format": "prettier --write src/**/*.ts"
+  },
+  "keywords": [
+    "filecoin",
+    "filfox",
+    "contract",
+    "verification",
+    "hardhat",
+    "hardhat-deploy",
+    "foundry",
+    "forge"
+  ],
+  "author": "FIL-Builders",
+  "license": "MIT",
+  "dependencies": {
+    "axios": "^1.11.0",
+    "chalk": "^4.1.2",
+    "commander": "^11.1.0",
+    "glob": "^10.3.10",
+    "inquirer": "^8.2.6",
+    "ora": "^5.4.1"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^19.8.1",
+    "@commitlint/config-conventional": "^19.8.1",
+    "@nomicfoundation/hardhat-verify": "^2.0.11",
+    "@semantic-release/changelog": "^6.0.3",
+    "@semantic-release/commit-analyzer": "^13.0.1",
+    "@semantic-release/git": "^10.0.1",
+    "@semantic-release/github": "^11.0.3",
+    "@semantic-release/npm": "^12.0.2",
+    "@semantic-release/release-notes-generator": "^14.0.3",
+    "@typechain/ethers-v6": "^0.5.0",
+    "@typechain/hardhat": "^9.0.0",
+    "@types/node": "^20.10.0",
+    "@typescript-eslint/eslint-plugin": "^6.13.0",
+    "@typescript-eslint/parser": "^6.13.0",
+    "commitizen": "^4.3.1",
+    "cz-conventional-changelog": "^3.3.0",
+    "eslint": "^8.54.0",
+    "hardhat": "^2.26.0",
+    "hardhat-deploy": "^0.12.0",
+    "hardhat-deploy-ethers": "^0.4.1",
+    "prettier": "^3.1.0",
+    "semantic-release": "^24.2.7",
+    "ts-node": "^10.9.1",
+    "typescript": "^5.3.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FIL-Builders/filfox-verifier.git"
+  },
+  "bugs": {
+    "url": "https://github.com/FIL-Builders/filfox-verifier/issues"
+  },
+  "homepage": "https://github.com/FIL-Builders/filfox-verifier#readme",
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}
