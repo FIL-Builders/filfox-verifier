@@ -12,7 +12,7 @@ export const verifyFilfoxCommand = new Command()
     "<contract>",
     "Contract path in format src/Contract.sol:ContractName"
   )
-  .argument(
+  .option(
     "--chain <chainId>",
     "Chain ID (314: Filecoin Mainnet, 314159: Filecoin Calibration Testnet)"
   )
