@@ -1,3 +1,10 @@
+## [1.0.3](https://github.com/FIL-Builders/filfox-verifier/compare/v1.0.2...v1.0.3) (2025-07-31)
+
+
+### Bug Fixes
+
+* forge cli options ([dc008eb](https://github.com/FIL-Builders/filfox-verifier/commit/dc008eb14393356e8047048e5965cfc146e25256))
+
 ## [1.0.2](https://github.com/FIL-Builders/filfox-verifier/compare/v1.0.1...v1.0.2) (2025-07-30)
 
 
