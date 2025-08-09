@@ -1,3 +1,10 @@
+## [1.1.1](https://github.com/FIL-Builders/filfox-verifier/compare/v1.1.0...v1.1.1) (2025-08-09)
+
+
+### Bug Fixes
+
+* updated README.md ([7599e95](https://github.com/FIL-Builders/filfox-verifier/commit/7599e95f1f93bd7d96cefea8cc61fc66cdedb73e))
+
 # [1.1.0](https://github.com/FIL-Builders/filfox-verifier/compare/v1.0.3...v1.1.0) (2025-08-09)
 
 
