@@ -1,40 +1,7 @@
-import fs from "fs";
 import { task } from "hardhat/config";
 import { HardhatRuntimeEnvironment } from "hardhat/types";
-
-interface SourceFile {
-  content: string;
-}
-
-interface SolcInputData {
-  language: string;
-  sources: Record<string, SourceFile>;
-  settings: {
-    optimizer: {
-      enabled: boolean;
-      runs: number;
-    };
-    evmVersion: string;
-    outputSelection: Record<string, Record<string, string[]>>;
-    metadata: {
-      useLiteralContent: boolean;
-    };
-    remappings: string[];
-  };
-}
-
-interface DeploymentData {
-  address: string;
-  solcInputHash: string;
-  metadata: string;
-}
-
-interface VerifyContractParams {
-  address: string;
-  chainId: number;
-  network: string;
-  deploymentsPath?: string;
-}
+import { ContractDataExtractor } from "./utils";
+import { VerifyContractParams, VerifyFilfoxParams } from "./types";
 
 export class FilfoxVerifier {
   private static readonly FILFOX_NETWORKS = {
@@ -59,7 +26,7 @@ export class FilfoxVerifier {
       );
     }
 
-    const verificationData = this.extractVerificationData(
+    const verificationData = await ContractDataExtractor.extractContractData(
       network,
       address,
       deploymentsPath,
@@ -92,123 +59,6 @@ export class FilfoxVerifier {
         "Please contact us on [Telegram](https://t.me/Filfoxofficial) if you encounter this error."
       );
     }
-  }
-
-  private static extractVerificationData(
-    network: string,
-    address: string,
-    deploymentsPath: string,
-    hre?: HardhatRuntimeEnvironment
-  ) {
-    // Search for the contract name in the deployments/network directory for the address
-    const deploymentFiles = fs
-      .readdirSync(`${deploymentsPath}/${network}`)
-      .filter((file) => file.endsWith(".json"));
-
-    const contractFileName = deploymentFiles.find((fileName) => {
-      try {
-        const filePath = `${deploymentsPath}/${network}/${fileName}`;
-        const deployment = JSON.parse(fs.readFileSync(filePath, "utf8"));
-        return deployment.address === address;
-      } catch (error) {
-        console.warn(
-          `Warning: Could not read deployment file ${fileName}:`,
-          error
-        );
-        return false;
-      }
-    });
-
-    if (!contractFileName) {
-      throw new Error(
-        `No deployment file found for contract address ${address} in ${deploymentsPath}/${network}`
-      );
-    }
-
-    // Extract contract name by removing .json extension
-    const contractName = contractFileName.replace(".json", "");
-
-    const deploymentPath = `${deploymentsPath}/${network}/${contractFileName}`;
-    const deployments: DeploymentData = JSON.parse(
-      fs.readFileSync(deploymentPath, "utf8")
-    );
-
-    const solcInputPath = `${deploymentsPath}/${network}/solcInputs/${deployments.solcInputHash}.json`;
-    const solcInput: SolcInputData = JSON.parse(
-      fs.readFileSync(solcInputPath, "utf8")
-    );
-
-    let sourceFiles = Object.keys(solcInput.sources).reduce(
-      (acc: any, key: string) => {
-        acc[key] = solcInput.sources[key];
-        return acc;
-      },
-      {}
-    );
-
-    const contractToVerify = Object.keys(sourceFiles).find((key) =>
-      key.includes(contractName + ".sol")
-    );
-
-    if (!contractToVerify) {
-      throw new Error(
-        `Contract ${contractName} not found in the sources provided.`
-      );
-    }
-
-    const contractSource = sourceFiles[contractToVerify];
-    delete sourceFiles[contractToVerify];
-    sourceFiles = { [contractToVerify]: contractSource, ...sourceFiles };
-
-    const { compiler, language } = JSON.parse(deployments.metadata) as {
-      compiler: {
-        version: string;
-      };
-      language: string;
-      output: {
-        abi: any[];
-        devdoc: any;
-        userdoc: any;
-      };
-    };
-
-    const compilerVersion = "v" + compiler.version;
-    const optimize = solcInput.settings.optimizer.enabled;
-    const optimizeRuns = solcInput.settings.optimizer.runs;
-    const license = "";
-    const evmVersion = solcInput.settings.evmVersion ?? "default";
-    const viaIR = hre
-      ? !!(hre.userConfig.solidity as any)?.settings?.viaIR
-      : false;
-    const libraries = "";
-    const metadata = solcInput.settings.metadata ?? "";
-    return {
-      address: deployments.address,
-      language,
-      compiler: compilerVersion,
-      optimize,
-      optimizeRuns,
-      sourceFiles,
-      license,
-      evmVersion,
-      viaIR,
-      libraries,
-      metadata,
-      optimizerDetails: "",
-    } as {
-      address: string;
-      language: string;
-      compiler: string;
-      optimize: boolean;
-      optimizeRuns: number;
-      sourceFiles: Record<string, SourceFile>;
-      license: string;
-      evmVersion: string;
-      viaIR: boolean;
-      libraries: string;
-      metadata: any;
-      optimizerDetails: string;
-    };
   }
 
   private static handleVerificationResult({
@@ -291,10 +141,6 @@ export class FilfoxVerifier {
         break;
     }
   }
-}
-
-interface VerifyFilfoxParams {
-  address: string;
 }
 
 export const HardhatFilfoxVerifierTask = task(
