@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/FIL-Builders/filfox-verifier/compare/v1.0.3...v1.1.0) (2025-08-09)
+
+
+### Features
+
+* add backward compatible hardhat verification with ignition and ([e5f1cb3](https://github.com/FIL-Builders/filfox-verifier/commit/e5f1cb35175187079fe29305bb5a4bf20de21b6c))
+
 ## [1.0.3](https://github.com/FIL-Builders/filfox-verifier/compare/v1.0.2...v1.0.3) (2025-07-31)
 
 
