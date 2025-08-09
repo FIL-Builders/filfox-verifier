@@ -1,16 +1,22 @@
 # Filfox Verifier
 
-A TypeScript CLI tool and Hardhat plugin for verifying smart contracts on Filfox, supporting both Foundry and Hardhat projects. Filfox is the block explorer for Filecoin networks.
+A TypeScript CLI tool and Hardhat plugin for verifying smart contracts on Filfox, supporting both Foundry and Hardhat v2+ projects with backward compatibility. Filfox is the block explorer for Filecoin networks.
 
 ## Features
 
-✅ **Multi-Framework Support**: Works with both Foundry and Hardhat projects  
-✅ **Filecoin Networks**: Supports Filecoin mainnet (314) and Calibration testnet (314159)  
+✅ **Multi-Framework Support**: Works with both Foundry and Hardhat v2+ projects  
+✅ **Filecoin Networks**: Supports Filecoin mainnet (314) and Calibration testnet (314159)
+
+#### Foundry
+
 ✅ **CLI Tool**: Command-line interface for Foundry projects  
-✅ **Hardhat Plugin**: Easy integration with Hardhat projects via tasks  
-✅ **Automatic Compilation**: Uses `forge build` for Foundry or Hardhat compilation artifacts  
-✅ **Smart Detection**: Automatically finds deployment files and extracts verification data  
-✅ **TypeScript**: Full type safety and modern async/await API
+✅ **Automatic Compilation**: Uses `forge build` for Foundry or Hardhat compilation artifacts
+
+#### Hardhat
+
+✅ **Hardhat Plugin**: Easy integration with Hardhat projects\
+✅ **Backward Compatible**: Supports all Hardhat deployment methods and versions v2+  
+✅ **Smart Detection**: Multi-fallback contract discovery (deployments → ignition → artifacts)
 
 ## Installation
 
@@ -73,9 +79,11 @@ npx hardhat verifyfilfox --address 0xYourContractAddress --network calibration
 
 **Requirements for Hardhat:**
 
-- Contract must be deployed using `hardhat-deploy`
-- Deployment artifacts should be in `./deployments/[network]/` directory
-- The tool automatically finds the contract by matching the deployment address
+- The tool supports multiple deployment methods:
+  - `hardhat-deploy` with artifacts in `./deployments/[network]/`
+  - Ignition deployments with artifacts in `./ignition/deployments/`
+  - Standard Hardhat compilation artifacts in `./artifacts/contracts/`
+    - The tool automatically finds contracts by matching deployment addresses or bytecode
 
 ## Supported Networks
 
@@ -96,10 +104,15 @@ npx hardhat verifyfilfox --address 0xYourContractAddress --network calibration
 
 ### For Hardhat Projects
 
-1. **Deployment Detection**: Finds deployment files in `./deployments/[network]/`
-2. **Artifact Processing**: Extracts solc input and metadata from deployment artifacts
+1. **Multi-Source Detection**: Automatically detects contracts through a robust fallback chain:
+   - **Primary**: Hardhat deployments in `./deployments/[network]/`
+   - **Secondary**: Ignition deployments in `./ignition/deployments/`
+   - **Tertiary**: Artifacts directory with bytecode matching in `./artifacts/contracts/`
+2. **Artifact Processing**: Extracts solc input and metadata from deployment artifacts or build info
 3. **Source Preparation**: Organizes source files for verification
-4. **Verification**: Submits to Filfox API with Hardhat-specific data
+4. **Verification**: Submits to Filfox API with complete compilation data
+
+This approach ensures compatibility across Hardhat v2+ and different deployment methods.
 
 ## Requirements
 
@@ -112,9 +125,11 @@ npx hardhat verifyfilfox --address 0xYourContractAddress --network calibration
 ### For Hardhat Projects
 
 - Node.js 20+
-- Hardhat project
-- `hardhat-deploy` plugin installed and configured
-- Contract deployed with deployment artifacts
+- Hardhat v2+ project (backward compatible)
+- Contract deployed with one of the supported methods:
+  - `hardhat-deploy` plugin
+  - Ignition deployment modules
+  - Standard Hardhat compilation
 
 ## API Response Handling
 
