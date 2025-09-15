@@ -1,3 +1,10 @@
+## [1.1.2](https://github.com/FIL-Builders/filfox-verifier/compare/v1.1.1...v1.1.2) (2025-09-15)
+
+
+### Bug Fixes
+
+* update version to be read from package.json ([1d4ac16](https://github.com/FIL-Builders/filfox-verifier/commit/1d4ac1645325b368f82255d1a514022ca715c179))
+
 ## [1.1.1](https://github.com/FIL-Builders/filfox-verifier/compare/v1.1.0...v1.1.1) (2025-08-09)
 
 
